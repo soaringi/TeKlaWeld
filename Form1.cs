@@ -41,7 +41,8 @@ namespace TeKlaWeld
                     continue;
                 }
                 var ass=part.GetAssembly();
-
+                var array= ass.GetSecondaries();
+                array.Add(ass.GetMainPart());
             }
         }
     }
