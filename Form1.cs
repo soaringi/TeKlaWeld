@@ -43,6 +43,28 @@ namespace TeKlaWeld
                 var ass=part.GetAssembly();
                 var array= ass.GetSecondaries();
                 array.Add(ass.GetMainPart());
+
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+                Picker picker = new Picker();
+            var p = picker.PickObject(Picker.PickObjectEnum.PICK_ONE_PART) as Part;
+            var p2 = picker.PickObject(Picker.PickObjectEnum.PICK_ONE_PART) as Part;
+            var po1= Method.GetPoints(p);
+            var po2 = Method.GetPoints(p2);
+            var i = 0;
+            foreach (var item in po1)
+            {
+                foreach (var item1 in po2)
+                {
+                    if (Method.IsContain(item.Value,item1.Value) )
+                    {
+                        i++;
+
+                    }
+                }
             }
         }
     }

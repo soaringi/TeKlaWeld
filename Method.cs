@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Tekla.Structures.Geometry3d;
 using Tekla.Structures.Model;
 using Tekla.Structures.Solid;
+using Parallel = Tekla.Structures.Geometry3d.Parallel;
 using Point = Tekla.Structures.Geometry3d.Point;
 
 namespace TeKlaWeld
@@ -41,20 +42,33 @@ namespace TeKlaWeld
         }
         public static bool IsContain(List<Point> pointsone, List<Point> pointstwo)
         {
-            var list = pointsone.Union(pointstwo).ToList();
-            ChangePositions(ref list);
-            var x = list.Select(p => p.X).Distinct().Count();
-            var y = list.Select(p => p.Y).Distinct().Count();
-            var z = list.Select(p => p.Z).Distinct().Count();
-            LinearRing linear = new LinearRing(pointsone);
+            ChangePositions(ref pointsone);
+            ChangePositions(ref pointstwo);
+            var list = pointsone.Union(pointstwo);
+            var q =list.Select(x => x.X).Distinct().Count();
+            var qq=list.Select(x => x.Y).Distinct().Count();
+             var qqq=list.Select(x => x.Z).Distinct().Count();
+            GeometricPlane plane1 = new GeometricPlane(
+                new Point(pointsone[0]),
+                new Vector(pointsone[1] - pointsone[0]),
+                new Vector(pointsone[2] - pointsone[0])
+                );
+            GeometricPlane plane2 = new GeometricPlane(
+                new Point(pointstwo[0]),
+                new Vector(pointstwo[1] - pointstwo[0]),
+                new Vector(pointstwo[2] - pointstwo[0])
+                 );
+            if (q==1||qq==1||qqq==1)
+            {
+                if (Parallel.PlaneToPlane(plane1, plane2, 0))
+                {
+                    return true;
+                }
+            }
+
             return false;
         }
-        LinearRing Chane(List<Point> p,string str)
-        {
-            Coordinate coordinate = new Coordinate();
-            return new LinearRing();
 
-        }
         static void ChangePositions(ref List<Point> p)
         {
             for (int i = 0; i < p.Count - 1; i++)
