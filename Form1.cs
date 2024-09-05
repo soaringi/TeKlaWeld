@@ -30,20 +30,19 @@ namespace TeKlaWeld
             {
                 Model = new Model();
             }
-            ModelObjectSelector se= new ModelObjectSelector  ();
+            ModelObjectSelector se= new ModelObjectSelector();
             var enumm=se.GetSelectedObjects();
             List<Assembly> assemblies = new List<Assembly>();
             while (enumm.MoveNext())
             {
-                var  part= enumm.Current as Part;
+                var  part= enumm.Current as Assembly;
                 if (part==null)
                 {
                     continue;
                 }
-                var ass=part.GetAssembly();
-                var array= ass.GetSecondaries();
-                array.Add(ass.GetMainPart());
-
+                var array= part.GetSecondaries();
+                array.Add(part.GetMainPart());
+                Method.SetAssembly(array);
             }
         }
 
@@ -59,11 +58,11 @@ namespace TeKlaWeld
             {
                 foreach (var item1 in po2)
                 {
-                    if (Method.IsContain(item.Value,item1.Value) )
-                    {
-                        i++;
+                    //if (Method.IsContain(item.Value,item1.Value) )
+                    //{
+                    //    i++;
 
-                    }
+                    //}
                 }
             }
         }
